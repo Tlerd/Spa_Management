@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+============================================================================
+[VAI TRÒ & CHỨC NĂNG]
+- Tệp cấu hình Deployment Descriptor (web.xml) của ứng dụng Spa Management.
+- Định nghĩa toàn bộ Bản đồ điều hướng (Servlet Mapping) cho toàn hệ thống:
+  + MainController: Front Controller - Cửa ngõ duy nhất.
+  + Nhóm Xác thực: LoginController, LogoutController, RegisterController.
+  + Nhóm Quản lý dịch vụ (Admin): ViewServicesController, CreateServiceController,
+    LoadServiceController, UpdateServiceController, DeleteServiceController.
+  + Nhóm Đặt lịch hẹn (Customer): LoadBookingController, BookAppointmentController,
+    ViewAppointmentsController, CancelAppointmentController.
+  + Nhóm Đánh giá (Customer): LoadReviewController, ReviewServiceController.
+  + Nhóm Tư vấn (Staff): ViewConsultationController, SaveNotesController, CompleteAppointmentController.
+  + Thời gian sống của phiên (Session Timeout): 30 phút.
+  + Trang chào mừng mặc định (Welcome File): login.jsp.
+
+[LUỒNG THỰC THI (EXECUTION FLOW)]
+1. Client truy cập http://localhost:8084/Spa_Management/ -> Web Server (Tomcat) nạp [login.jsp].
+2. Khi Client gửi request tới bất kỳ URL nào dạng /MainController hoặc /LoginController...
+   Tomcat đối chiếu <url-pattern> trong web.xml -> Tìm ra <servlet-name> tương ứng
+   -> Khởi tạo và gọi phương thức service()/processRequest() của <servlet-class>.
+
+[LIÊN HỆ & TÁC ĐỘNG KHI SỬA ĐỔI (IMPACT ANALYSIS)]
+1. Sửa <servlet-class> (ví dụ com.spa.controller.LoginController):
+    -> Phải khớp chính xác với package và tên Class trong thư mục src/java.
+2. Sửa <url-pattern> (ví dụ /LoginController):
+    -> Phải đồng bộ với các hằng số Controller trong [MainController.java] (LOGIN_CONTROLLER = "LoginController",...).
+3. Dấu gạch chéo đầu '/' trong <url-pattern> là BẮT BUỘC theo chuẩn Servlet Specification (ví dụ "/MainController"),
+   nếu thiếu '/' Tomcat sẽ báo lỗi ngay khi khởi động (Deployment failure).
+============================================================================
+-->
+<web-app version="3.1"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
+    <!-- ============ 1. CỬA NGÕ DUY NHẤT (FRONT CONTROLLER) ============ -->
+    <!-- [TÁC ĐỘNG]: Tiếp nhận mọi request có action từ các form JSP -->
+    <servlet>
+        <servlet-name>MainController</servlet-name>
+        <servlet-class>com.spa.controller.MainController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MainController</servlet-name>
+        <url-pattern>/MainController</url-pattern>
+    </servlet-mapping>
+
+    <!-- ============ 2. NHÓM XÁC THỰC (AUTHENTICATION) ============ -->
+    <!-- Xử lý đăng nhập (action=Login) -->
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>com.spa.controller.LoginController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginController</servlet-name>
+        <url-pattern>/LoginController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Xử lý đăng xuất (action=Logout) -->
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>com.spa.controller.LogoutController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/LogoutController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Xử lý đăng ký tài khoản (action=Register) -->
+    <servlet>
+        <servlet-name>RegisterController</servlet-name>
+        <servlet-class>com.spa.controller.RegisterController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterController</servlet-name>
+        <url-pattern>/RegisterController</url-pattern>
+    </servlet-mapping>
+
+    <!-- ============ 3. NHÓM QUẢN LÝ DỊCH VỤ - DÀNH CHO ADMIN ============ -->
+    <!-- Xem và tìm kiếm danh sách dịch vụ (action=ViewServices) -->
+    <servlet>
+        <servlet-name>ViewServicesController</servlet-name>
+        <servlet-class>com.spa.controller.ViewServicesController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewServicesController</servlet-name>
+        <url-pattern>/ViewServicesController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Thêm dịch vụ mới (action=CreateService) -->
+    <servlet>
+        <servlet-name>CreateServiceController</servlet-name>
+        <servlet-class>com.spa.controller.CreateServiceController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateServiceController</servlet-name>
+        <url-pattern>/CreateServiceController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Nạp thông tin dịch vụ lên form sửa (action=LoadService) -->
+    <servlet>
+        <servlet-name>LoadServiceController</servlet-name>
+        <servlet-class>com.spa.controller.LoadServiceController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoadServiceController</servlet-name>
+        <url-pattern>/LoadServiceController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Cập nhật thông tin dịch vụ (action=UpdateService) -->
+    <servlet>
+        <servlet-name>UpdateServiceController</servlet-name>
+        <servlet-class>com.spa.controller.UpdateServiceController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateServiceController</servlet-name>
+        <url-pattern>/UpdateServiceController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Xóa dịch vụ (action=DeleteService) -->
+    <servlet>
+        <servlet-name>DeleteServiceController</servlet-name>
+        <servlet-class>com.spa.controller.DeleteServiceController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteServiceController</servlet-name>
+        <url-pattern>/DeleteServiceController</url-pattern>
+    </servlet-mapping>
+
+    <!-- ============ 4. NHÓM ĐẶT LỊCH - DÀNH CHO CUSTOMER ============ -->
+    <!-- Nạp danh mục dịch vụ lên form đặt lịch (action=LoadBooking) -->
+    <servlet>
+        <servlet-name>LoadBookingController</servlet-name>
+        <servlet-class>com.spa.controller.LoadBookingController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoadBookingController</servlet-name>
+        <url-pattern>/LoadBookingController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Lưu lịch hẹn mới (action=BookAppointment) -->
+    <servlet>
+        <servlet-name>BookAppointmentController</servlet-name>
+        <servlet-class>com.spa.controller.BookAppointmentController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BookAppointmentController</servlet-name>
+        <url-pattern>/BookAppointmentController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Xem danh sách lịch hẹn của khách hàng (action=ViewAppointments) -->
+    <servlet>
+        <servlet-name>ViewAppointmentsController</servlet-name>
+        <servlet-class>com.spa.controller.ViewAppointmentsController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewAppointmentsController</servlet-name>
+        <url-pattern>/ViewAppointmentsController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Hủy lịch hẹn đang chờ (action=CancelAppointment) -->
+    <servlet>
+        <servlet-name>CancelAppointmentController</servlet-name>
+        <servlet-class>com.spa.controller.CancelAppointmentController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CancelAppointmentController</servlet-name>
+        <url-pattern>/CancelAppointmentController</url-pattern>
+    </servlet-mapping>
+
+    <!-- ============ 5. NHÓM ĐÁNH GIÁ - DÀNH CHO CUSTOMER ============ -->
+    <!-- Nạp danh mục dịch vụ đủ điều kiện và lịch sử đánh giá (action=LoadReview) -->
+    <servlet>
+        <servlet-name>LoadReviewController</servlet-name>
+        <servlet-class>com.spa.controller.LoadReviewController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoadReviewController</servlet-name>
+        <url-pattern>/LoadReviewController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Lưu bài đánh giá mới (action=ReviewService) -->
+    <servlet>
+        <servlet-name>ReviewServiceController</servlet-name>
+        <servlet-class>com.spa.controller.ReviewServiceController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReviewServiceController</servlet-name>
+        <url-pattern>/ReviewServiceController</url-pattern>
+    </servlet-mapping>
+
+    <!-- ============ 6. NHÓM TƯ VẤN - DÀNH CHO STAFF ============ -->
+    <!-- Xem danh sách lịch hẹn phân công cho nhân viên (action=ViewConsultation) -->
+    <servlet>
+        <servlet-name>ViewConsultationController</servlet-name>
+        <servlet-class>com.spa.controller.ViewConsultationController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewConsultationController</servlet-name>
+        <url-pattern>/ViewConsultationController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Lưu ghi chú tư vấn của nhân viên (action=SaveNotes) -->
+    <servlet>
+        <servlet-name>SaveNotesController</servlet-name>
+        <servlet-class>com.spa.controller.SaveNotesController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SaveNotesController</servlet-name>
+        <url-pattern>/SaveNotesController</url-pattern>
+    </servlet-mapping>
+
+    <!-- Đánh dấu hoàn thành lịch hẹn (action=CompleteAppointment) -->
+    <servlet>
+        <servlet-name>CompleteAppointmentController</servlet-name>
+        <servlet-class>com.spa.controller.CompleteAppointmentController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CompleteAppointmentController</servlet-name>
+        <url-pattern>/CompleteAppointmentController</url-pattern>
+    </servlet-mapping>
+
+    <!-- [CẤU HÌNH THỜI GIAN SỐNG CỦA PHIÊN (SESSION TIMEOUT)]: 30 phút không hoạt động sẽ hết hạn -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <!-- [TRANG CHÀO MỪNG MẶC ĐỊNH]: Mở khi truy cập http://localhost:8084/Spa_Management/ -->
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>

@@ -1,0 +1,123 @@
+/* Spa Consultation Portal - bang kieu chung cho ca muoi mot trang.
+   Giu don gian, khong phu thuoc thu vien ngoai, de bai cham khong can mang. */
+
+body {
+    font-family: Segoe UI, Arial, sans-serif;
+    font-size: 14px;
+    color: #222;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 24px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #dfe3e8;
+    border-radius: 6px;
+    padding: 20px 24px;
+}
+
+h2 {
+    margin-top: 0;
+    color: #16607a;
+    border-bottom: 2px solid #16607a;
+    padding-bottom: 8px;
+}
+
+h3 {
+    color: #16607a;
+    margin-top: 28px;
+}
+
+label {
+    display: inline-block;
+    min-width: 150px;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="datetime-local"],
+select,
+textarea {
+    padding: 6px 8px;
+    border: 1px solid #c3cbd3;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+input[readonly] {
+    background-color: #eceff1;
+    color: #555;
+}
+
+input[type="submit"] {
+    background-color: #16607a;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 14px;
+    font-size: inherit;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0f4557;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 12px;
+    background-color: #fff;
+}
+
+th {
+    background-color: #16607a;
+    color: #fff;
+    text-align: left;
+}
+
+th, td {
+    border: 1px solid #c3cbd3;
+    padding: 6px 8px;
+    vertical-align: top;
+}
+
+tr:nth-child(even) td {
+    background-color: #f7f9fa;
+}
+
+/* Hai loai thong bao, hai mau. Do cho loi, xanh cho tin vui.
+   Chia hai loai nhu vay tranh duoc tinh huong bao tin vui bang chu do. */
+.error {
+    color: #a4262c;
+    background-color: #fdeced;
+    border-left: 4px solid #a4262c;
+    padding: 8px 12px;
+}
+
+.message {
+    color: #0b6a0b;
+    background-color: #e9f7e9;
+    border-left: 4px solid #0b6a0b;
+    padding: 8px 12px;
+}
+
+nav ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+nav li {
+    margin-bottom: 8px;
+}
+
+a {
+    color: #16607a;
+}

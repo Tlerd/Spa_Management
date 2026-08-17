@@ -1,0 +1,20 @@
+# Claude files
+.claude/
+CLAUDE.md
+*claude*
+*Claude*
+
+# Build outputs
+build/
+dist/
+nbbuild/
+distresources/
+
+# NetBeans local / private configuration
+nbproject/private/
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
